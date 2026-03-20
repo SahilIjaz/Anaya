@@ -35,9 +35,13 @@ export default function Register() {
     if (interests.length === 0) return setError("Select at least one interest");
     if (hobbies.length === 0) return setError("Select at least one hobby");
     setLoading(true);
+    console.log("[REGISTER] Attempting registration for:", email);
+    console.log("[REGISTER] Data:", { name, email, interests, hobbies });
     try {
       await register({ name, email, password, interests, hobbies });
+      console.log("[REGISTER] Registration successful!");
     } catch (err) {
+      console.error("[REGISTER] Registration FAILED:", err.response?.status, err.response?.data, err.message);
       setError(err.response?.data?.message || "Registration failed");
     }
     setLoading(false);
