@@ -22,17 +22,16 @@ console.log("[SERVER] CLOUDINARY_CLOUD_NAME exists:", !!process.env.CLOUDINARY_C
 
 const app = express();
 const server = http.createServer(app);
-const allowedOrigins = process.env.CLIENT_URL
-  ? [process.env.CLIENT_URL, "http://localhost:5173", "http://localhost:5174"]
-  : ["http://localhost:5173", "http://localhost:5174"];
 
-console.log("[SERVER] Allowed CORS origins:", allowedOrigins);
+// Temporarily allow all origins to debug CORS issue
+console.log("[SERVER] CLIENT_URL from env:", process.env.CLIENT_URL);
+console.log("[SERVER] Using open CORS for debugging");
 
 const io = new Server(server, {
-  cors: { origin: allowedOrigins, credentials: true },
+  cors: { origin: true, credentials: true },
 });
 
-app.use(cors({ origin: allowedOrigins, credentials: true }));
+app.use(cors({ origin: true, credentials: true }));
 app.use(express.json({ limit: "10mb" }));
 
 // Request logger middleware
