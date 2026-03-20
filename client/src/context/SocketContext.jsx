@@ -14,31 +14,14 @@ export function SocketProvider({ children }) {
   useEffect(() => {
     if (user) {
       const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || "http://localhost:5001";
-      console.log("[SOCKET-CTX] Connecting to:", SOCKET_URL, "| userId:", user._id);
       const s = io(SOCKET_URL, { withCredentials: true });
-
-      s.on("connect", () => {
-        console.log("[SOCKET-CTX] Connected! socketId:", s.id);
-      });
-
-      s.on("connect_error", (err) => {
-        console.error("[SOCKET-CTX] Connection ERROR:", err.message);
-      });
-
       setSocket(s);
 
       s.emit("user-online", user._id);
-      console.log("[SOCKET-CTX] Emitted user-online");
 
-      s.on("online-users", (users) => {
-        console.log("[SOCKET-CTX] Online users:", users.length);
-        setOnlineUsers(users);
-      });
+      s.on("online-users", (users) => setOnlineUsers(users));
 
-      return () => {
-        console.log("[SOCKET-CTX] Disconnecting...");
-        s.disconnect();
-      };
+      return () => s.disconnect();
     }
   }, [user]);
 
