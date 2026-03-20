@@ -40,13 +40,22 @@ export default function Register() {
     if (interests.length === 0) return setError("Select at least one interest");
     if (hobbies.length === 0) return setError("Select at least one hobby");
     setLoading(true);
+    setDebugLog([]);
+    addLog(`API URL: ${API_URL}`);
+    addLog(`Attempting registration for: ${email}`);
     console.log("[REGISTER] Attempting registration for:", email);
     console.log("[REGISTER] Data:", { name, email, interests, hobbies });
     try {
+      addLog("Sending POST /auth/register...");
       await register({ name, email, password, interests, hobbies });
+      addLog("Registration successful!");
       console.log("[REGISTER] Registration successful!");
     } catch (err) {
-      console.error("[REGISTER] Registration FAILED:", err.response?.status, err.response?.data, err.message);
+      const status = err.response?.status || "NO RESPONSE";
+      const msg = err.response?.data?.message || err.message;
+      addLog(`FAILED! Status: ${status} | Error: ${msg}`);
+      addLog(`Full error: ${JSON.stringify(err.response?.data || err.message)}`);
+      console.error("[REGISTER] Registration FAILED:", status, err.response?.data, err.message);
       setError(err.response?.data?.message || "Registration failed");
     }
     setLoading(false);
@@ -80,6 +89,17 @@ export default function Register() {
                 <div key={s} className={`w-8 h-1 rounded-full ${s <= step ? "gradient-bg" : "bg-gray-700"}`} />
               ))}
             </div>
+          </div>
+
+          {/* DEBUG BANNER - remove after fixing */}
+          <div className="bg-blue-500/10 border border-blue-500/30 text-blue-300 px-4 py-3 rounded-xl mb-4 text-xs font-mono">
+            <p className="font-bold mb-1">DEBUG INFO:</p>
+            <p>API URL: {API_URL}</p>
+            <p>VITE_API_URL: {import.meta.env.VITE_API_URL || "NOT SET"}</p>
+            <p>MODE: {import.meta.env.MODE}</p>
+            {debugLog.map((log, i) => (
+              <p key={i} className="text-yellow-300">{log}</p>
+            ))}
           </div>
 
           {error && (
