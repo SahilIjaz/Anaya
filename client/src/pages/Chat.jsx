@@ -5,6 +5,10 @@ import { useSocket } from "../context/SocketContext";
 import api from "../utils/api";
 import { FiMessageCircle, FiSearch } from "react-icons/fi";
 
+
+
+
+
 export default function Chat() {
   const { user: me } = useAuth();
   const { onlineUsers } = useSocket();
