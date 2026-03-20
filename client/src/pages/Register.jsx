@@ -27,6 +27,9 @@ export default function Register() {
   const [hobbies, setHobbies] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [debugLog, setDebugLog] = useState([]);
+
+  const addLog = (msg) => setDebugLog((prev) => [...prev, `${new Date().toLocaleTimeString()} - ${msg}`]);
 
   const toggle = (arr, setArr, val) => {
     setArr(arr.includes(val) ? arr.filter((v) => v !== val) : [...arr, val]);
