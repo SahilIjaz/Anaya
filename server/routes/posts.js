@@ -6,7 +6,6 @@ import auth from "../middleware/auth.js";
 const router = Router();
 
 // Create post
-//fAdgo-rDMnjyJmbFwF3_Qvajs2o
 router.post("/", auth, async (req, res) => {
   try {
     const { content, image, tags } = req.body;
