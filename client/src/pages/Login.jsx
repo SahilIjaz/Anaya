@@ -3,38 +3,20 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { FiMail, FiLock, FiArrowRight } from "react-icons/fi";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5001/api";
-
 export default function Login() {
   const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [debugLog, setDebugLog] = useState([]);
-
-  const addLog = (msg) => setDebugLog((prev) => [...prev, `${new Date().toLocaleTimeString()} - ${msg}`]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    setDebugLog([]);
     setLoading(true);
-    addLog(`API URL: ${API_URL}`);
-    addLog(`Attempting login for: ${email}`);
-    console.log("[LOGIN] Attempting login for:", email);
-    console.log("[LOGIN] API URL:", API_URL);
     try {
-      addLog("Sending POST /auth/login...");
       await login(email, password);
-      addLog("Login successful!");
-      console.log("[LOGIN] Login successful!");
     } catch (err) {
-      const status = err.response?.status || "NO RESPONSE";
-      const msg = err.response?.data?.message || err.message;
-      addLog(`FAILED! Status: ${status} | Error: ${msg}`);
-      addLog(`Full error: ${JSON.stringify(err.response?.data || err.message)}`);
-      console.error("[LOGIN] Login FAILED:", status, err.response?.data, err.message);
       setError(err.response?.data?.message || "Login failed");
     }
     setLoading(false);
@@ -63,17 +45,6 @@ export default function Login() {
           </div>
           <h2 className="text-3xl font-bold mb-2">Welcome back</h2>
           <p className="text-gray-400 mb-8">Sign in to continue your journey</p>
-
-          {/* DEBUG BANNER - remove after fixing */}
-          <div className="bg-blue-500/10 border border-blue-500/30 text-blue-300 px-4 py-3 rounded-xl mb-4 text-xs font-mono">
-            <p className="font-bold mb-1">DEBUG INFO:</p>
-            <p>API URL: {API_URL}</p>
-            <p>VITE_API_URL: {import.meta.env.VITE_API_URL || "NOT SET"}</p>
-            <p>MODE: {import.meta.env.MODE}</p>
-            {debugLog.map((log, i) => (
-              <p key={i} className="text-yellow-300">{log}</p>
-            ))}
-          </div>
 
           {error && (
             <div className="bg-red-500/10 border border-red-500/30 text-red-400 px-4 py-3 rounded-xl mb-4 text-sm">
