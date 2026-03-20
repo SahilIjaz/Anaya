@@ -14,9 +14,12 @@ export default function Login() {
     e.preventDefault();
     setError("");
     setLoading(true);
+    console.log("[LOGIN] Attempting login for:", email);
     try {
       await login(email, password);
+      console.log("[LOGIN] Login successful!");
     } catch (err) {
+      console.error("[LOGIN] Login FAILED:", err.response?.status, err.response?.data, err.message);
       setError(err.response?.data?.message || "Login failed");
     }
     setLoading(false);
