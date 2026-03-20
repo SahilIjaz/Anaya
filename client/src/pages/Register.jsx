@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { FiUser, FiMail, FiLock, FiArrowRight, FiCheck } from "react-icons/fi";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5001/api";
+
 const INTERESTS = [
   "Photography", "Travel", "Music", "Art", "Gaming", "Fitness",
   "Cooking", "Reading", "Movies", "Technology", "Fashion", "Nature",
